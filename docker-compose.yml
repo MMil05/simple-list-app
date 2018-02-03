@@ -1,0 +1,26 @@
+version: '2'
+services:
+  simple-db:
+    container_name: "simple-db-container"
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=simple-db
+      - MYSQL_USER=testowy
+      - MYSQL_PASSWORD=testowy
+      - MYSQL_ROOT_PASSWORD=pass
+    ports:
+      - 4055:3306
+  simple-webapp:
+    container_name: "simple-webapp"
+    build: .
+    environment:
+      - MYSQL_URI=simple-db:3306
+      - MYSQL_DATABASE=simple-db
+      - MYSQL_USER=testowy
+      - MYSQL_PASSWORD=testowy
+      - DATASOURCE_NAME=java:/SimpleDS
+    ports:
+      - 8080:8080
+      - 9990:9990
+    depends_on:
+      - simple-db
