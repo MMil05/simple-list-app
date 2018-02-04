@@ -62,7 +62,7 @@ fi
 echo "=> Restarting WildFly"
 
 #add person for console management tool
-/opt/jboss/wildfly/bin/add-person.sh admin abcd1234 --silent
+/opt/jboss/wildfly/bin/add-user.sh admin abcd1234 --silent
 
 #run wildfly
 $JBOSS_HOME/bin/$JBOSS_MODE.sh -b 0.0.0.0 -bmanagement 0.0.0.0 -c $JBOSS_CONFIG
