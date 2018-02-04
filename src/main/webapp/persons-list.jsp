@@ -3,11 +3,14 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Simple-list App [persons-list.jsp] #2</title>
+    <title>Simple-list App [persons-list.jsp]</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
     <script src="${pageContext.request.contextPath}/js/sorttable.js" type="text/javascript"></script>
 </head>
 <body>
+<div>
+    <h1>Lista osób</h1>
+</div>
 <div>
     <form action="PrintPersonsList" method="get">
         <label>Imię lub nazwisko: </label>
@@ -28,8 +31,8 @@
             <td><c:out value="${item.id}"/></td>
             <td><c:out value="${item.name}"/></td>
             <td><c:out value="${item.surname}"/></td>
-            <td></td>
-            <td></td>
+            <td><c:out value="${item.birthDate}"/></td>
+            <td><c:out value="${item.email}"/></td>
         </tr>
     </c:forEach>
 </table>

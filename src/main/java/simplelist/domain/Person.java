@@ -1,13 +1,13 @@
 package simplelist.domain;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "getAll", query = "from Person")
 })
-// ID (liczba), imię, nazwisko, data urodzenia, adres email.
+
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,19 +17,9 @@ public class Person {
     private String name;
     @Column(nullable = false)
     private String surname;
-   // @Column(nullable = false)
-    private Date birthDate;
-    //private String login;
+    @Column(nullable = false)
+    private LocalDate birthDate;
     private String email;
-
-    public Person(int id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-      //  this.login = login;
-      //  this.age = age;
-       // this.gender = gender;
-    }
 
     public Person() {
 
@@ -37,10 +27,6 @@ public class Person {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -59,11 +45,11 @@ public class Person {
         this.surname = surname;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -77,6 +63,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return name + " " + surname + " (id: " + id + ")";
+        return name + " " + surname + " (ID: " + id + ")";
     }
 }

@@ -4,13 +4,14 @@ import simplelist.domain.Person;
 import simplelist.service.PersonsRepositoryService;
 
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.time.LocalDate;
 
 @WebServlet("/AddPerson")
 public class AddPersonServlet extends HttpServlet {
@@ -21,93 +22,54 @@ public class AddPersonServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-                if (!areParamsValid(req, resp))
-                    return;
+        if (!areParamsValid(req)) {
+            req.setAttribute("errorMsg", "Wprowadzono niekompletne dane - dodawanie anulowane!");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("index.jsp");
+            requestDispatcher.forward(req, resp);
+            return;
+        }
 
-                req.getSession().setAttribute("name", req.getParameter("name"));
-                req.getSession().setAttribute("surname", req.getParameter("surname"));
-                req.getSession().setAttribute("age", req.getParameter("age"));
-
+        setAttributesFromParams(req);
                 addPerson(req, resp);
                 resp.sendRedirect("/PrintPersonsList");
     }
 
-    private boolean areParamsValidStep1(HttpServletRequest req, HttpServletResponse resp) {
-        boolean valid = !( // (req.getParameter("id") == null) ||
-                (req.getParameter("login") == null)
-                        // || req.getParameter("id").isEmpty()
-                || req.getParameter("login").isEmpty()
-        );
-
-        if (!valid) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return valid;
-        }
-
-        if (req.getSession().getAttribute("edit_person_data") != null)
-            return valid;
-
-        return valid;
+    private void setAttributesFromParams(HttpServletRequest req) {
+        req.setAttribute("name", req.getParameter("name"));
+        req.setAttribute("surname", req.getParameter("surname"));
+        req.setAttribute("birthDate", req.getParameter("birthDate"));
+        req.setAttribute("email", req.getParameter("email"));
     }
 
-    private boolean areParamsValid(HttpServletRequest req, HttpServletResponse resp) {
+
+    private boolean areParamsValid(HttpServletRequest req) {
         boolean valid = !((req.getParameter("name") == null)
                 || req.getParameter("name").isEmpty()
                 || (req.getParameter("surname") == null)
                 || req.getParameter("surname").isEmpty()
-             //   || (req.getParameter("age") == null)
-             //   || req.getParameter("age").isEmpty()
+                || (req.getParameter("birthDate") == null)
+                || req.getParameter("birthDate").isEmpty()
+                || (req.getParameter("email") == null)
+                || req.getParameter("email").isEmpty()
         );
-
-        if (!valid)
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
         return valid;
     }
 
 
     private void addPerson(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Person newPerson = new Person();
-
         setPersonData(newPerson, req);
-
         personsRepositoryService.addPerson(newPerson);
-        printAddedPerson(resp, newPerson);
-
     }
 
-
-    private void printAddedPerson(HttpServletResponse resp, Person addedPerson) throws IOException {
-
-        if (addedPerson == null) {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        PrintWriter writer = resp.getWriter();
-        writer.println("<!DOCTYPE html><html><body> Dodano osobę: "
-                + addedPerson.getName() + " " + addedPerson.getSurname()
-              //  + "`, wiek: " + person.getAge()
-                + "</body></html>");
-    }
-
-    private void updatePerson(HttpServletRequest req, HttpServletResponse resp) {
-        //req.getSession().setAttribute("edit_person_data", null);
-
-        Person person = (Person) req.getSession().getAttribute("edited_person");
-        if (person == null) {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        setPersonData(person, req);
-        req.getSession().invalidate();
-    }
 
     private void setPersonData(Person person, HttpServletRequest req) {
-        person.setName((String) req.getSession().getAttribute("name"));
-        person.setSurname((String) req.getSession().getAttribute("surname"));
-    //    person.setAge(Integer.parseInt((String) req.getSession().getAttribute("age")));
+        person.setName((String) req.getAttribute("name"));
+        person.setSurname((String) req.getAttribute("surname"));
+        person.setEmail((String) req.getAttribute("email"));
 
+        String birthDate = (String) req.getAttribute("birthDate");
+        LocalDate date = LocalDate.parse(birthDate);
+        person.setBirthDate(date);
     }
 }

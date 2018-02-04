@@ -15,7 +15,6 @@ public class PersonsRepository {
 
     public boolean addPerson(Person person) {
         entityManager.persist(person);
-        System.out.println("Dodana osoba: " + person.toString());
         return true;
     }
 

@@ -1,10 +1,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form action="AddPerson" method="post">
-    <label>Imię</label><input name="name" value="${sessionScope.edited_person.name}" type="text"><br/><br/>
-    <label>Nazwisko</label><input name="surname" value="${sessionScope.edited_person.surname}"
-                                        type="text"><br/><br/>
 
-    <label>Data urodzenia</label><input name="birthdate" value="${sessionScope.edited_person.birthDate}" type="date"><br/><br/>
-    <label>Adres e-mail</label><input name="email" value="${sessionScope.edited_person.email}" type="email"><br/><br/>
-    <input type="submit" name="add-person" value="Wyślij">
-</form>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Simple-list App [add-person.jsp]</title>
+</head>
+<body>
+<div>
+    <h1>Dodawanie nowej osoby</h1>
+</div>
+<div>
+    <form action="AddPerson" method="post">
+        <table>
+            <tr>
+                <td><label>Imię</label></td>
+                <td><input name="name" value="" type="text" required></td>
+            </tr>
+            <tr>
+                <td><label>Nazwisko</label></td>
+                <td><input name="surname" value="" type="text" required></td>
+            </tr>
+            <tr>
+                <td><label>Data urodzenia</label></td>
+                <td><input name="birthDate" value="" type="date" required></td>
+            </tr>
+            <tr>
+                <td><label>Adres e-mail</label></td>
+                <td><input name="email" value="" type="email" required></td>
+            </tr>
+        </table>
+        <input type="submit" name="add-person" value="Wyślij">
+    </form>
+</div>
+<%@ include file="go-back.jsp" %>
+</body>
+</html>
