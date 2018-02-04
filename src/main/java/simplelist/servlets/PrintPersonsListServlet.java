@@ -25,28 +25,31 @@ public class PrintPersonsListServlet extends HttpServlet {
         prepareAndDispatch(req, resp);
     }
 
-
     private void prepareAndDispatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         List<Person> personsList = personsBean.getPersonsList();
         List<Person> personsFilteredList = getPersonsFilteredList(req, personsList);
 
-        req.setAttribute("personsList", personsFilteredList != null ? personsFilteredList : personsList);
+        req.getSession().setAttribute("personsList", personsFilteredList != null ? personsFilteredList : personsList);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/persons-list.jsp");
         requestDispatcher.forward(req, resp);
     }
 
     private List<Person> getPersonsFilteredList(HttpServletRequest req, List<Person> personsList) {
+        String keyword;
         List<Person> personsFilteredList = null;
-        if (req.getParameter("keyword") != null && !req.getParameter("keyword").isEmpty()) {
-            String keyword = req.getParameter("keyword").toLowerCase();
+        keyword = req.getParameter("keyword");
+        if (keyword != null) {
+            if (!keyword.isEmpty()) {
+                String phrase = keyword.toLowerCase();
 
-            personsFilteredList = personsList.stream()
-                    .filter(person -> person.getName().toLowerCase()
-                            .contains(keyword) || person.getSurname().toLowerCase()
-                            .contains(keyword))
-                    .collect(Collectors.toList());
-            req.setAttribute("enteredKeyword", keyword);
+                personsFilteredList = personsList.stream()
+                        .filter(person -> person.getName().toLowerCase()
+                                .contains(phrase) || person.getSurname().toLowerCase()
+                                .contains(phrase))
+                        .collect(Collectors.toList());
+            }
+            req.getSession().setAttribute("enteredKeyword", keyword);
         }
         return personsFilteredList;
     }

@@ -41,6 +41,12 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.8-dmr</version>
     </dependency>
+      <!-- https://mvnrepository.com/artifact/displaytag/displaytag -->
+      <dependency>
+          <groupId>displaytag</groupId>
+          <artifactId>displaytag</artifactId>
+          <version>1.2</version>
+      </dependency>
   </dependencies>
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -58,7 +64,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <!--<version>3.3</version>-->
         <configuration>
           <source>${java.version}</source>
           <target>${java.version}</target>

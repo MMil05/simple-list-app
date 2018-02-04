@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <br>
-<div>[<a href="<c:url value="/index.jsp"/>">Strona główna</a>]</div>
+<div>[<a href="<c:url value="/index.jsp"/>">Main page</a>]</div>
 <br>
 <hr>
 

@@ -23,7 +23,7 @@ public class AddPersonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if (!areParamsValid(req)) {
-            req.setAttribute("errorMsg", "Wprowadzono niekompletne dane - dodawanie anulowane!");
+            req.setAttribute("errorMsg", "Action canceled (incomplete data was entered)!");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("index.jsp");
             requestDispatcher.forward(req, resp);
             return;
@@ -44,13 +44,13 @@ public class AddPersonServlet extends HttpServlet {
 
     private boolean areParamsValid(HttpServletRequest req) {
         boolean valid = !((req.getParameter("name") == null)
-                || req.getParameter("name").isEmpty()
+                || req.getParameter("name").trim().isEmpty()
                 || (req.getParameter("surname") == null)
-                || req.getParameter("surname").isEmpty()
+                || req.getParameter("surname").trim().isEmpty()
                 || (req.getParameter("birthDate") == null)
-                || req.getParameter("birthDate").isEmpty()
+                || req.getParameter("birthDate").trim().isEmpty()
                 || (req.getParameter("email") == null)
-                || req.getParameter("email").isEmpty()
+                || req.getParameter("email").trim().isEmpty()
         );
         return valid;
     }
@@ -67,7 +67,6 @@ public class AddPersonServlet extends HttpServlet {
         person.setName((String) req.getAttribute("name"));
         person.setSurname((String) req.getAttribute("surname"));
         person.setEmail((String) req.getAttribute("email"));
-
         String birthDate = (String) req.getAttribute("birthDate");
         LocalDate date = LocalDate.parse(birthDate);
         person.setBirthDate(date);

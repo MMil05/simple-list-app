@@ -1,8 +1,28 @@
-table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
-    content: " \25B4\25BE"
+table {
+    border: 1px solid;
+    width: 70%;
+}
+
+thead tr {
+    background-color: #9b9898;
+}
+
+th.sorted {
+    background-color: #c6c6c6;
+}
+
+th a, th a:visited {
+    color: black;
+}
+
+th a:hover {
+    text-decoration: underline;
+    color: black;
 }
 
 .errorMessage {
     color: red;
     padding: 10px;
 }
+
+

@@ -8,12 +8,13 @@
 </head>
 <body>
 <div>
-    <h1>Witamy w aplikacji <i>Simple-list</i>!</h1>
+    <h1>Welcome in <i>Simple-list</i> application!</h1>
 </div>
 
 <c:if test="${errorMsg != null}">
     <div class="errorMessage">${errorMsg}</div>
 </c:if>
+<c:set var="enteredKeyword" scope="session" value=""/>
 
 <%@ include file="menu.jsp" %>
 <br>
