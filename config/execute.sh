@@ -43,7 +43,7 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/config/mysql-connecto
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
 
 # Add the datasource
-data-source add --name=mysqlDS --driver-name=mysql --jndi-name=$DATASOURCE_NAME --connection-url=jdbc:mysql://$MYSQL_URI/$MYSQL_DATABASE?useUnicode=true&characterEncoding=utf8&useSSL=false --person-name=$MYSQL_USER --password=$MYSQL_PASSWORD --enabled=true
+data-source add --name=mysqlDS --driver-name=mysql --jndi-name=$DATASOURCE_NAME --connection-url=jdbc:mysql://$MYSQL_URI/$MYSQL_DATABASE?useUnicode=true&characterEncoding=utf8&useSSL=false --user-name=$MYSQL_USER --password=$MYSQL_PASSWORD --enabled=true
 
 # Execute the batch
 run-batch
@@ -61,7 +61,7 @@ fi
 
 echo "=> Restarting WildFly"
 
-#add person for console management tool
+#add user for console management tool
 /opt/jboss/wildfly/bin/add-user.sh admin abcd1234 --silent
 
 #run wildfly
