@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("PrintPersonsList")
 public class PrintPersonsListServlet extends HttpServlet {
@@ -24,20 +25,29 @@ public class PrintPersonsListServlet extends HttpServlet {
         prepareAndDispatch(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        prepareAndDispatch(req, resp);
-    }
 
     private void prepareAndDispatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<Person> persons = personsBean.getPersonsList();
+        List<Person> personsList = personsBean.getPersonsList();
+        List<Person> personsFilteredList = getPersonsFilteredList(req, personsList);
 
-       // list.stream.filter   (dane do filtracji z formularz.get)
-        // (Person user)-> user.getName().contains("test")||user.getSurname().contains("test");
-        // req.setAttribute("statList", stats);
-        req.setAttribute("personsList", persons);
+        req.setAttribute("personsList", personsFilteredList != null ? personsFilteredList : personsList);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/persons-list.jsp");
         requestDispatcher.forward(req, resp);
+    }
+
+    private List<Person> getPersonsFilteredList(HttpServletRequest req, List<Person> personsList) {
+        List<Person> personsFilteredList = null;
+        if (req.getParameter("keyword") != null && !req.getParameter("keyword").isEmpty()) {
+            String keyword = req.getParameter("keyword").toLowerCase();
+
+            personsFilteredList = personsList.stream()
+                    .filter(person -> person.getName().toLowerCase()
+                            .contains(keyword) || person.getSurname().toLowerCase()
+                            .contains(keyword))
+                    .collect(Collectors.toList());
+            req.setAttribute("enteredKeyword", keyword);
+        }
+        return personsFilteredList;
     }
 }

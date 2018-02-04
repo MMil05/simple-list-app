@@ -8,8 +8,13 @@
     <script src="${pageContext.request.contextPath}/js/sorttable.js" type="text/javascript"></script>
 </head>
 <body>
-
-<%--mini formularz--%>
+<div>
+    <form action="PrintPersonsList" method="get">
+        <label>Imię lub nazwisko: </label>
+        <input type="text" name="keyword" value="${enteredKeyword}">
+        <input type="submit" name="filter-submit" value="Filtruj">
+    </form>
+</div>
 <table border="1" class="sortable">
     <tr>
         <th>ID</th>
